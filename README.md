@@ -1,1 +1,2 @@
-# erc20-coder
+# Erc20 Coder
+Decode transactions logs. Encode data.

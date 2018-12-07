@@ -1,0 +1,35 @@
+{
+  "name": "merkeleon/erc20-coder",
+  "description": "Erc20 Coder",
+  "keywords": [
+    "erc20",
+    "decode-logs",
+    "encode-data",
+    "merkeleon"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Yan Terentiev",
+      "email": "jan.terentiev@merkeleon.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "laravel/framework": "5.*",
+    "sc0vu/web3.php": "dev-master"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Merkeleon\\Coder\\Providers\\CoderServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Merkeleon\\Coder\\": "src/"
+    }
+  }
+}
