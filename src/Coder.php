@@ -163,9 +163,33 @@ class Coder
         {
             throw new CoderException('Incorrect number parameters for method transferFrom.');
         }
+
         $data = $this->ethAbi->encodeParameters($function, $params);
 
         $functionSignature = $this->encodeFunctionSignature('transferFrom');
+
+
+        $code = $functionSignature . Utils::stripZero($data);
+
+        return $code;
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     * @throws CoderException
+     */
+    public function getCodeTransfer(array $params): string
+    {
+        $function = $this->contract->functions['transfer'];
+        if (count($params) !== count($function['inputs']))
+        {
+            throw new CoderException('Incorrect number parameters for method transferFrom.');
+        }
+
+        $data = $this->ethAbi->encodeParameters($function, $params);
+
+        $functionSignature = $this->encodeFunctionSignature('transfer');
 
 
         $code = $functionSignature . Utils::stripZero($data);
