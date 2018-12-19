@@ -152,13 +152,15 @@ class Coder
     }
 
     /**
+     * @param string $method
      * @param array $params
      * @return string
      * @throws CoderException
      */
-    public function getCodeTransferFrom(array $params): string
+    public function encodeMethod(string $method, array $params): string
     {
-        $function = $this->contract->functions['transferFrom'];
+        $methodName = strtolower($method);
+        $function   = $this->contract->functions[$methodName];
         if (count($params) !== count($function['inputs']))
         {
             throw new CoderException('Incorrect number parameters for method transferFrom.');
@@ -166,30 +168,7 @@ class Coder
 
         $data = $this->ethAbi->encodeParameters($function, $params);
 
-        $functionSignature = $this->encodeFunctionSignature('transferFrom');
-
-
-        $code = $functionSignature . Utils::stripZero($data);
-
-        return $code;
-    }
-
-    /**
-     * @param array $params
-     * @return string
-     * @throws CoderException
-     */
-    public function getCodeTransfer(array $params): string
-    {
-        $function = $this->contract->functions['transfer'];
-        if (count($params) !== count($function['inputs']))
-        {
-            throw new CoderException('Incorrect number parameters for method transferFrom.');
-        }
-
-        $data = $this->ethAbi->encodeParameters($function, $params);
-
-        $functionSignature = $this->encodeFunctionSignature('transfer');
+        $functionSignature = $this->encodeFunctionSignature($methodName);
 
 
         $code = $functionSignature . Utils::stripZero($data);
@@ -215,27 +194,5 @@ class Coder
         $rawSignature .= join(',', $types) . ')';
 
         return substr(Utils::sha3($rawSignature), 0, 10);
-    }
-
-    /**
-     * @param array $params
-     * @return string
-     * @throws CoderException
-     */
-    public function getCodeApprove(array $params): string
-    {
-        $function = $this->contract->functions['approve'];
-        if (count($params) !== count($function['inputs']))
-        {
-            throw new CoderException('Incorrect number parameters for method approve.');
-        }
-        $data = $this->ethAbi->encodeParameters($function, $params);
-
-        $functionSignature = $this->encodeFunctionSignature('approve');
-
-
-        $code = $functionSignature . Utils::stripZero($data);
-
-        return $code;
     }
 }
