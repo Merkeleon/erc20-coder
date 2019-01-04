@@ -159,8 +159,7 @@ class Coder
      */
     public function encodeMethod(string $method, array $params): string
     {
-        $methodName = strtolower($method);
-        $function   = $this->contract->functions[$methodName];
+        $function   = $this->contract->functions[$method];
         if (count($params) !== count($function['inputs']))
         {
             throw new CoderException('Incorrect number parameters for method transferFrom.');
@@ -168,7 +167,7 @@ class Coder
 
         $data = $this->ethAbi->encodeParameters($function, $params);
 
-        $functionSignature = $this->encodeFunctionSignature($methodName);
+        $functionSignature = $this->encodeFunctionSignature($method);
 
 
         $code = $functionSignature . Utils::stripZero($data);
