@@ -52,7 +52,7 @@ class Coder
             $eventInputs[$id] = $event;
         }
 
-        if ($topicId)
+        if ($topicId && isset($eventInputs[$topicId]))
         {
             $inputs      = array_get($eventInputs[$topicId], 'inputs');
             $parsedEvent = $this->decodeEvent($inputs, $topics, $data);
