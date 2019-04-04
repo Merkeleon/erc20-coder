@@ -46,6 +46,11 @@ class Coder
         $topics      = array_slice(array_get($logs, '0.topics', []), 1);
         $topicId     = substr(array_first(array_get($logs, '0.topics', [])), 2);
 
+        if (empty($topics) || is_null($data))
+        {
+            return [];
+        }
+
         foreach ($this->contract->getEvents() as $event)
         {
             $id               = $this->encodeEventSignature($event);
