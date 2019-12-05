@@ -17,7 +17,7 @@
   ],
   "require": {
     "php": ">=7.2",
-    "laravel/framework": "6.*",
+    "laravel/framework": "5.*|6.*",
     "sc0vu/web3.php": "dev-master"
   },
   "extra": {
