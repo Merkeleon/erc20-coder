@@ -8,6 +8,7 @@
 
 namespace Merkeleon\Coder;
 
+use Illuminate\Support\Arr;
 use Merkeleon\Coder\Exceptions\CoderException;
 use Web3\
 {
@@ -42,9 +43,9 @@ class Coder
     public function decodeLogs(array $logs): array
     {
         $eventInputs = [];
-        $data        = array_get($logs, '0.data');
-        $topics      = array_slice(array_get($logs, '0.topics', []), 1);
-        $topicId     = substr(array_first(array_get($logs, '0.topics', [])), 2);
+        $data        = Arr::get($logs, '0.data');
+        $topics      = array_slice(Arr::get($logs, '0.topics', []), 1);
+        $topicId     = substr(Arr::first(Arr::get($logs, '0.topics', [])), 2);
 
         if (empty($topics) || is_null($data))
         {
@@ -59,7 +60,7 @@ class Coder
 
         if ($topicId && isset($eventInputs[$topicId]))
         {
-            $inputs      = array_get($eventInputs[$topicId], 'inputs');
+            $inputs      = Arr::get($eventInputs[$topicId], 'inputs');
             $parsedEvent = $this->decodeEvent($inputs, $topics, $data);
         }
 
@@ -72,12 +73,12 @@ class Coder
      */
     private function encodeEventSignature(array $event)
     {
-        $rawSignature = array_get($event, 'name') . '(';
+        $rawSignature = Arr::get($event, 'name') . '(';
         $types        = [];
 
-        foreach (array_get($event, 'inputs', []) as $i => $input)
+        foreach (Arr::get($event, 'inputs', []) as $i => $input)
         {
-            $types[$i] = array_get($input, 'type');
+            $types[$i] = Arr::get($input, 'type');
         }
 
         $rawSignature .= join(',', $types) . ')';
@@ -96,8 +97,8 @@ class Coder
         $result = [];
         foreach ($inputs as $i => $input)
         {
-            $type = array_get($input, 'type');
-            $name = array_get($input, 'name');
+            $type = Arr::get($input, 'type');
+            $name = Arr::get($input, 'name');
 
             if ($type === 'address')
             {
@@ -128,7 +129,7 @@ class Coder
 
                 return;
             }
-            $response = array_first($result)->toString();
+            $response = Arr::first($result)->toString();
         });
 
         return $response;
@@ -150,7 +151,7 @@ class Coder
                 return;
             }
 
-            $response = array_first($result)->toString();
+            $response = Arr::first($result)->toString();
         });
 
         return $response;
@@ -190,9 +191,9 @@ class Coder
         $rawSignature = $method . '(';
         $types        = [];
 
-        foreach (array_get($function, 'inputs', []) as $i => $input)
+        foreach (Arr::get($function, 'inputs', []) as $i => $input)
         {
-            $types[$i] = array_get($input, 'type');
+            $types[$i] = Arr::get($input, 'type');
         }
 
         $rawSignature .= join(',', $types) . ')';
