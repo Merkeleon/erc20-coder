@@ -40,12 +40,12 @@ class Coder
      * @param array $logs
      * @return array
      */
-    public function decodeLogs(array $logs): array
+    public function decodeLog(array $log): array
     {
         $eventInputs = [];
-        $data        = Arr::get($logs, '0.data');
-        $topics      = array_slice(Arr::get($logs, '0.topics', []), 1);
-        $topicId     = substr(Arr::first(Arr::get($logs, '0.topics', [])), 2);
+        $data        = Arr::get($log, 'data');
+        $topics      = array_slice(Arr::get($log, 'topics', []), 1);
+        $topicId     = substr(Arr::first(Arr::get($log, 'topics', [])), 2);
 
         if (empty($topics) || is_null($data))
         {
@@ -62,9 +62,28 @@ class Coder
         {
             $inputs      = Arr::get($eventInputs[$topicId], 'inputs');
             $parsedEvent = $this->decodeEvent($inputs, $topics, $data);
+            $parsedEvent['eventName'] = $eventInputs[$topicId]['name'];
         }
 
         return $parsedEvent ?? [];
+    }
+
+    /**
+     * @param array $logs
+     * @return array
+     */
+    public function decodeLogs(array $logs): array
+    {
+        $parsedEvents = [];
+        foreach ($logs as $log) {
+            $decodedLog = $this->decodeLog($log);
+            if (empty($decodedLog)) {
+                continue;
+            }
+            $parsedEvents[] = $decodedLog;
+        }
+
+        return $parsedEvents;
     }
 
     /**
