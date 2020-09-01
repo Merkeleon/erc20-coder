@@ -40,7 +40,7 @@ class Coder
      * @param array $logs
      * @return array
      */
-    public function decodeLogs(array $log): array
+    public function decodeLog(array $log): array
     {
         $eventInputs = [];
         $data        = Arr::get($log, 'data');
@@ -66,6 +66,23 @@ class Coder
         }
 
         return $parsedEvent ?? [];
+    }
+
+    /**
+     * @param array $logs
+     * @return array
+     */
+    public function decodeLogs(array $logs): array
+    {
+        $parsedEvents = [];
+        $log = Arr::get($logs, 0, []);
+        $decodedLog = $this->decodeLog($log);
+        if (empty($decodedLog)) {
+            return $parsedEvents;
+        }
+        $parsedEvents[] = $decodedLog;
+
+        return $parsedEvents;
     }
 
     /**
