@@ -40,7 +40,7 @@ class Coder
      * @param array $logs
      * @return array
      */
-    public function decodeLog(array $log): array
+    public function decodeLogs(array $log): array
     {
         $eventInputs = [];
         $data        = Arr::get($log, 'data');
@@ -72,7 +72,7 @@ class Coder
      * @param array $logs
      * @return array
      */
-    public function decodeLogs(array $logs): array
+    public function decodeFullLogs(array $logs): array
     {
         $parsedEvents = [];
         foreach ($logs as $log) {
